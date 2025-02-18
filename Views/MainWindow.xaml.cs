@@ -8,7 +8,7 @@ namespace Kryptograf.Views;
 /// </summary>
 public partial class MainWindow : Window
 {
-    public MainWindow(EncryptionViewModel viewModel)
+    public MainWindow(MainWindowViewModel viewModel)
     {
         InitializeComponent();
         DataContext = viewModel;

@@ -6,28 +6,76 @@
         Title="Kryptograf" Height="600" Width="800"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
-        <!-- Colors definitions -->
-        <Color x:Key="PrimaryColor">#FF3B8D99</Color>
-        <Color x:Key="SecondaryColor">#FF1B2A49</Color>
-        <SolidColorBrush x:Key="ActiveButtonForegroundColor" Color="White"/>
-        <SolidColorBrush x:Key="DisabledButtonForegoundColor" Color="LightSlateGray"/>
-        <SolidColorBrush x:Key="ActiveCleanButtonBackgroundColor" Color="LimeGreen" />
-        <SolidColorBrush x:Key="DisabledButtonBackgroundColor" Color="DarkGray" />
-        <SolidColorBrush x:Key="EncryptButtonBackgroundColor" Color="#FF5DADE2" />
-        <SolidColorBrush x:Key="DecryptButtonBackgroundColor" Color="#FFE74C3C" />
-
         <!--Styles-->
         <Style TargetType="Button">
-            <Setter Property="Foreground" Value="{StaticResource ActiveButtonForegroundColor}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ActiveButtonForegroundColor}"/>
             <Setter Property="FontSize" Value="16" />
             <Setter Property="Padding" Value="5" />
             <Setter Property="Height" Value="Auto" />
             <Style.Triggers>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Foreground" Value="{StaticResource DisabledButtonForegoundColor}"/>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="{DynamicResource HoverButtonForegroundColor}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <Style TargetType="ToggleButton">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0"
+                              Width="40"
+                              Height="18">
+                            <!--Hitbox-->
+                            <Rectangle Fill="Transparent" />
+
+                            <!--Toggle-Switch Outline-->
+                            <Border CornerRadius="10"
+                                    BorderBrush="Wheat"
+                                    BorderThickness="1"
+                                    x:Name="ToggleBorder">
+                                <!--Dot in Toggle-Switch-->
+                                <Ellipse Fill="DarkGray"
+                                         Height="10"
+                                         Width="10"
+                                         HorizontalAlignment="Left"
+                                         Margin="4,0"
+                                         VerticalAlignment="Center"
+                                         x:Name="ToggleEllipse"/>
+                            </Border>
+                        </Grid>
+                        <ContentPresenter Grid.Column="1"
+                                          Margin="4,0,0,0"
+                                          VerticalAlignment="Center"
+                                          HorizontalAlignment="Left"/>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <!--Change colors and move dot to the right-->
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="ToggleEllipse"
+                                    Property="HorizontalAlignment"
+                                    Value="Right" />
+                            <Setter TargetName="ToggleBorder"
+                                    Property="BorderBrush"
+                                    Value="#5B72C2" />
+                            <Setter TargetName="ToggleBorder"
+                                    Property="Background"
+                                    Value="#5B72C2" />
+                            <Setter TargetName="ToggleEllipse"
+                                    Property="Fill"
+                                    Value="White" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
         <!-- Conventers -->
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -36,8 +84,8 @@
 
     <Window.Background>
         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="{StaticResource PrimaryColor}" Offset="0" />
-            <GradientStop Color="{StaticResource SecondaryColor}" Offset="1" />
+            <GradientStop Color="{DynamicResource PrimaryColor}" Offset="0" />
+            <GradientStop Color="{DynamicResource SecondaryColor}" Offset="1" />
         </LinearGradientBrush>
     </Window.Background>
 
@@ -50,8 +98,17 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Kryptograf" FontSize="28" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"
-                   Margin="0,0,0,20" />
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Text="Kryptograf" FontSize="28" FontWeight="Bold"
+                       Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="10,0,0,30"/>
+            <ToggleButton Grid.Column="1" IsChecked="{Binding  IsDarkMode}"
+                          VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10,0,0,0"/>
+        </Grid>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
             <TextBlock Text="Text:" VerticalAlignment="Center" Foreground="White" FontSize="16" Margin="40,0,10,0" />
@@ -64,17 +121,18 @@
                          Height="100" MaxHeight="100"
                          Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}"
                          FontSize="16" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
+                         Foreground="{DynamicResource TextBoxForegroundColor}"
+                         Background="{DynamicResource TextBoxBackgroundColor}"
                          Padding="5" />
                 <Button Grid.Column="1" Content="Clean"
                         Command="{Binding CleanTextCommand}" CommandParameter="InputText"
                         Width="70" Margin="5,0,0,0"
-                        Background="{StaticResource ActiveCleanButtonBackgroundColor}" VerticalAlignment="Bottom" />
+                        Background="{DynamicResource CleanButtonBackgroundColor}" VerticalAlignment="Bottom" />
             </Grid>
         </StackPanel>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,10">
             <TextBlock Text="Password:" VerticalAlignment="Center" Foreground="White" FontSize="16" Margin="0,0,10,0" />
-
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="500" />
@@ -84,32 +142,35 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
+                    <PasswordBox x:Name="PasswordBox" Grid.Row="0" Grid.Column="0" FontSize="16" Padding="5"
+                                 helpers:PasswordBoxHelper.BindPassword="True"
+                                 helpers:PasswordBoxHelper.BoundPassword="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Foreground="{DynamicResource TextBoxForegroundColor}"
+                                 Background="{DynamicResource TextBoxBackgroundColor}"
+                                 Visibility="{Binding IsPasswordVisible, Converter={StaticResource NegativeBooleanToVisibilityConverter}}" />
 
-                <PasswordBox x:Name="PasswordBox" Grid.Row="0" Grid.Column="0" FontSize="16" Padding="5"
-                             helpers:PasswordBoxHelper.BindPassword="True"
-                             helpers:PasswordBoxHelper.BoundPassword="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             Visibility="{Binding IsPasswordVisible, Converter={StaticResource NegativeBooleanToVisibilityConverter}}" />
+                    <TextBox x:Name="TextBoxPassword" Grid.Row="0" Grid.Column="0" FontSize="16" Padding="5"
+                             Visibility="{Binding IsPasswordVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                             Foreground="{DynamicResource TextBoxForegroundColor}"
+                             Background="{DynamicResource TextBoxBackgroundColor}"
+                             Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                <TextBox x:Name="TextBoxPassword" Grid.Row="0" Grid.Column="0" FontSize="16" Padding="5"
-                         Visibility="{Binding IsPasswordVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
-                         Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <Button Grid.Row="0" Grid.Column="1" Content="Clean"
+                            Command="{Binding CleanTextCommand}" CommandParameter="Password"
+                            Width="70" Margin="5,0,0,0"
+                            Background="{DynamicResource CleanButtonBackgroundColor}" VerticalAlignment="Bottom" />
 
-                <Button Grid.Row="0" Grid.Column="1" Content="Clean"
-                        Command="{Binding CleanTextCommand}" CommandParameter="Password"
-                        Width="70" Margin="5,0,0,0"
-                        Background="{StaticResource ActiveCleanButtonBackgroundColor}" VerticalAlignment="Bottom" />
-
-                <Button Grid.Row="1" Grid.Column="0" Content="Show/Hide" Command="{Binding TogglePasswordVisibilityCommand}"
-                        Width="70" Margin="0,2,0,0"
-                        Background="{StaticResource DisabledButtonBackgroundColor}" Padding="5" HorizontalAlignment="Left"/>
+                    <Button Grid.Row="1" Grid.Column="0" Content="{Binding PasswordVisibilityText}" Command="{Binding TogglePasswordVisibilityCommand}"
+                            Width="70" Margin="0,2,0,0" FontSize="13"
+                            Background="{DynamicResource ShowHideButtonBackgroundColor}" Padding="5" HorizontalAlignment="Left"/>
             </Grid>
         </StackPanel>
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 0, 0, 10">
             <Button Content="Encrypt" Command="{Binding EncryptCommand}" Width="100" Margin="5"
-                    Background="{StaticResource EncryptButtonBackgroundColor}" Padding="5" />
+                    Background="{DynamicResource EncryptButtonBackgroundColor}" Padding="5" />
             <Button Content="Decrypt" Command="{Binding DecryptCommand}" Width="100" Margin="5"
-                    Background="{StaticResource DecryptButtonBackgroundColor}" Padding="5" />
+                    Background="{DynamicResource DecryptButtonBackgroundColor}" Padding="5" />
         </StackPanel>
 
         <Grid Grid.Row="4">
@@ -121,24 +182,26 @@
             <StackPanel Grid.Column="0" Margin="10">
                 <TextBlock Text="Encrypted Text:" FontSize="16" FontWeight="Bold" Foreground="White" Margin="0,0,0,5" />
                 <TextBox Text="{Binding EncryptedText}" TextWrapping="Wrap" FontSize="16" IsReadOnly="True" Padding="5"
-                         Background="White"
-                         Foreground="Black" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Height="120" />
+                         Foreground="{DynamicResource TextBoxForegroundColor}"
+                         Background="{DynamicResource TextBoxBackgroundColor}"
+                         AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Height="120" />
                 <Button Content="Clean"
                         Command="{Binding CleanTextCommand}" CommandParameter="EncryptedText"
                         Width="70" Margin="0,5 ,0 ,0"
-                        Background="{StaticResource ActiveCleanButtonBackgroundColor}" Padding="5"
+                        Background="{DynamicResource CleanButtonBackgroundColor}" Padding="5"
                         HorizontalAlignment="Right" />
             </StackPanel>
 
             <StackPanel Grid.Column="1" Margin="10">
                 <TextBlock Text="Decrypted Text:" FontSize="16" FontWeight="Bold" Foreground="White" Margin="0,0,0,5" />
                 <TextBox Text="{Binding DecryptedText}" TextWrapping="Wrap" FontSize="16" IsReadOnly="True" Padding="5"
-                         Background="White"
-                         Foreground="Black" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Height="120" />
+                         Foreground="{DynamicResource TextBoxForegroundColor}"
+                         Background="{DynamicResource TextBoxBackgroundColor}"
+                         AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Height="120" />
                 <Button Content="Clean"
                         Command="{Binding CleanTextCommand}" CommandParameter="DecryptedText"
                         Width="70" Margin="0,5 ,0 ,0"
-                        Background="{StaticResource ActiveCleanButtonBackgroundColor}" Padding="5"
+                        Background="{DynamicResource CleanButtonBackgroundColor}" Padding="5"
                         HorizontalAlignment="Right" />
             </StackPanel>
         </Grid>

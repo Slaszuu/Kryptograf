@@ -19,7 +19,7 @@ public partial class App : Application
 
         var services = new ServiceCollection();
         services.AddSingleton<IEncryptionService, AesEncryptionService>();
-        services.AddSingleton<EncryptionViewModel>();
+        services.AddSingleton<MainWindowViewModel>();
         services.AddSingleton<MainWindow>();
 
         ServiceProvider = services.BuildServiceProvider();

@@ -2,28 +2,45 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using Kryptograf.Commands;
+using Kryptograf.Enums;
+using Kryptograf.Helpers;
 using Kryptograf.Services;
 
 namespace Kryptograf.ViewModels;
 
-public class EncryptionViewModel : INotifyPropertyChanged
+public class MainWindowViewModel : INotifyPropertyChanged
 {
     private readonly IEncryptionService _encryptionService;
+
+    private bool _isDarkMode;
     private string _inputText;
     private string _encryptedText;
     private string _decryptedText;
     private string _password;
     private bool _isPasswordVisible;
+    private string _passwordVisibilityText;
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public EncryptionViewModel(IEncryptionService encryptionService)
+    public MainWindowViewModel(IEncryptionService encryptionService)
     {
         _encryptionService = encryptionService;
         EncryptCommand = new RelayCommand(Encrypt, CanEncrypt);
         DecryptCommand = new RelayCommand(Decrypt, CanDecrypt);
         CleanTextCommand = new CleanTextCommand(CleanText, CanCleanText);
         TogglePasswordVisibilityCommand = new RelayCommand(TogglePasswordVisibility, CanTogglePasswordVisibility);
+
+        IsDarkMode = false;
+        IsPasswordVisible = false;
+    }
+
+    public bool IsDarkMode
+    {
+        set
+        {
+            _isDarkMode = value;
+            ThemeHelper.ApplyTheme(_isDarkMode ? Theme.Dark : Theme.Light);
+        }
     }
 
     public string InputText
@@ -81,10 +98,20 @@ public class EncryptionViewModel : INotifyPropertyChanged
         set
         {
             _isPasswordVisible = value;
+            PasswordVisibilityText = _isPasswordVisible ? "Hide" : "Show";
             OnPropertyChanged(nameof(IsPasswordVisible));
         }
     }
 
+    public string PasswordVisibilityText
+    {
+        get => _passwordVisibilityText;
+        set
+        {
+            _passwordVisibilityText = value;
+            OnPropertyChanged(nameof(PasswordVisibilityText));
+        }
+    }
     public ICommand EncryptCommand { get; }
     public ICommand DecryptCommand { get; }
     public ICommand CleanTextCommand { get; }

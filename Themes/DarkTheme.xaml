@@ -1,0 +1,16 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Color x:Key="PrimaryColor">#FF1B2A49</Color>
+    <Color x:Key="SecondaryColor">#FF0A141D</Color>
+
+    <SolidColorBrush x:Key="TextBoxForegroundColor" Color="Azure"/>
+    <SolidColorBrush x:Key="TextBoxBackgroundColor" Color="Black"/>
+
+    <SolidColorBrush x:Key="ActiveButtonForegroundColor" Color="White"/>
+    <SolidColorBrush x:Key="HoverButtonForegroundColor" Color="DimGray"/>
+
+    <SolidColorBrush x:Key="ShowHideButtonBackgroundColor" Color="DimGray" />
+    <SolidColorBrush x:Key="CleanButtonBackgroundColor" Color="#FF4CAF50"/>
+    <SolidColorBrush x:Key="EncryptButtonBackgroundColor" Color="#FF2C8C99"/>
+    <SolidColorBrush x:Key="DecryptButtonBackgroundColor" Color="#FFB83B4D"/>
+</ResourceDictionary>
