@@ -4,7 +4,7 @@
     <Color x:Key="SecondaryColor">#FF0A141D</Color>
 
     <SolidColorBrush x:Key="TextBoxForegroundColor" Color="Azure"/>
-    <SolidColorBrush x:Key="TextBoxBackgroundColor" Color="Black"/>
+    <SolidColorBrush x:Key="TextBoxBackgroundColor" Color="#0E0E1E"/>
 
     <SolidColorBrush x:Key="ActiveButtonForegroundColor" Color="White"/>
     <SolidColorBrush x:Key="HoverButtonForegroundColor" Color="DimGray"/>

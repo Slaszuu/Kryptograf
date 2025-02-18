@@ -36,11 +36,11 @@
 
                             <!--Toggle-Switch Outline-->
                             <Border CornerRadius="10"
-                                    BorderBrush="Wheat"
+                                    BorderBrush="White"
                                     BorderThickness="1"
                                     x:Name="ToggleBorder">
                                 <!--Dot in Toggle-Switch-->
-                                <Ellipse Fill="DarkGray"
+                                <Ellipse Fill="Wheat"
                                          Height="10"
                                          Width="10"
                                          HorizontalAlignment="Left"
@@ -69,7 +69,7 @@
                                     Value="#5B72C2" />
                             <Setter TargetName="ToggleEllipse"
                                     Property="Fill"
-                                    Value="White" />
+                                    Value="LightGray" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
