@@ -27,8 +27,9 @@ public class MainWindowViewModel : INotifyPropertyChanged
         _encryptionService = encryptionService;
         EncryptCommand = new RelayCommand(Encrypt, CanEncrypt);
         DecryptCommand = new RelayCommand(Decrypt, CanDecrypt);
-        CleanTextCommand = new CleanTextCommand(CleanText, CanCleanText);
+        CleanTextCommand = new CleanTextCommand(CleanText, IsTextPropertyNullOrEmpty);
         TogglePasswordVisibilityCommand = new RelayCommand(TogglePasswordVisibility, CanTogglePasswordVisibility);
+        CopyTextToClipboardCommand = new CopyTextToClipboardCommand(CopyTextToClipboard, IsTextPropertyNullOrEmpty);
 
         IsDarkMode = false;
         IsPasswordVisible = false;
@@ -64,6 +65,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
             _encryptedText = value;
             OnPropertyChanged(nameof(EncryptedText));
             (CleanTextCommand as CleanTextCommand)?.RaiseCanExecuteChanged(nameof(DecryptedText));
+            (CopyTextToClipboardCommand as CopyTextToClipboardCommand)?.RaiseCanExecuteChanged(nameof(EncryptedText));
         }
     }
 
@@ -75,6 +77,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
             _decryptedText = value;
             OnPropertyChanged(nameof(DecryptedText));
             (CleanTextCommand as CleanTextCommand)?.RaiseCanExecuteChanged(nameof(DecryptedText));
+            (CopyTextToClipboardCommand as CopyTextToClipboardCommand)?.RaiseCanExecuteChanged(nameof(DecryptedText));
         }
     }
 
@@ -116,12 +119,13 @@ public class MainWindowViewModel : INotifyPropertyChanged
     public ICommand DecryptCommand { get; }
     public ICommand CleanTextCommand { get; }
     public ICommand TogglePasswordVisibilityCommand { get; }
+    public ICommand CopyTextToClipboardCommand { get; }
 
     private bool CanEncrypt() => !string.IsNullOrWhiteSpace(InputText) && !string.IsNullOrWhiteSpace(Password);
 
     private bool CanDecrypt() => !string.IsNullOrWhiteSpace(InputText) && !string.IsNullOrWhiteSpace(Password);
 
-    private bool CanCleanText(string propertyName)
+    private bool IsTextPropertyNullOrEmpty(string propertyName)
     {
         var property = GetType().GetProperty(propertyName);
         return !string.IsNullOrEmpty(property?.GetValue(this) as string);
@@ -150,8 +154,13 @@ public class MainWindowViewModel : INotifyPropertyChanged
     private void CleanText(string propertyName)
     {
         var property = GetType().GetProperty(propertyName);
+        property?.SetValue(this, string.Empty);
+    }
 
-        if (property != null && property.CanWrite) property.SetValue(this, string.Empty);
+    private void CopyTextToClipboard(string propertyName)
+    {
+        var property = GetType().GetProperty(propertyName);
+        Clipboard.SetText(property?.GetValue(this) as string ?? string.Empty);
     }
 
     private void TogglePasswordVisibility()

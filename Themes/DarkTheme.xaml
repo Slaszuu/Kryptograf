@@ -9,6 +9,7 @@
     <SolidColorBrush x:Key="ActiveButtonForegroundColor" Color="White"/>
     <SolidColorBrush x:Key="HoverButtonForegroundColor" Color="DimGray"/>
 
+    <SolidColorBrush x:Key="CopyButtonBackgroundColor" Color="#004A87" />
     <SolidColorBrush x:Key="ShowHideButtonBackgroundColor" Color="DimGray" />
     <SolidColorBrush x:Key="CleanButtonBackgroundColor" Color="#FF4CAF50"/>
     <SolidColorBrush x:Key="EncryptButtonBackgroundColor" Color="#FF2C8C99"/>

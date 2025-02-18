@@ -106,7 +106,7 @@
 
             <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Text="Kryptograf" FontSize="28" FontWeight="Bold"
                        Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="10,0,0,30"/>
-            <ToggleButton Grid.Column="1" IsChecked="{Binding  IsDarkMode}"
+            <ToggleButton Grid.Column="1" IsChecked="{Binding  IsDarkMode}" ToolTip="Switch UI mode"
                           VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10,0,0,0"/>
         </Grid>
 
@@ -185,11 +185,16 @@
                          Foreground="{DynamicResource TextBoxForegroundColor}"
                          Background="{DynamicResource TextBoxBackgroundColor}"
                          AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Height="120" />
-                <Button Content="Clean"
-                        Command="{Binding CleanTextCommand}" CommandParameter="EncryptedText"
-                        Width="70" Margin="0,5 ,0 ,0"
-                        Background="{DynamicResource CleanButtonBackgroundColor}" Padding="5"
-                        HorizontalAlignment="Right" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5,0,0">
+                    <Button Content="Clean"
+                            Command="{Binding CleanTextCommand}" CommandParameter="EncryptedText"
+                            Width="70" Margin="0,0,5,0"
+                            Background="{DynamicResource CleanButtonBackgroundColor}" Padding="5"/>
+                    <Button Content="Copy"
+                            Command="{Binding CopyTextToClipboardCommand}" CommandParameter="EncryptedText"
+                            Width="70" HorizontalAlignment="Center"
+                            Background="{DynamicResource CopyButtonBackgroundColor}" Padding="5"/>
+                </StackPanel>
             </StackPanel>
 
             <StackPanel Grid.Column="1" Margin="10">
@@ -198,11 +203,16 @@
                          Foreground="{DynamicResource TextBoxForegroundColor}"
                          Background="{DynamicResource TextBoxBackgroundColor}"
                          AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Height="120" />
-                <Button Content="Clean"
-                        Command="{Binding CleanTextCommand}" CommandParameter="DecryptedText"
-                        Width="70" Margin="0,5 ,0 ,0"
-                        Background="{DynamicResource CleanButtonBackgroundColor}" Padding="5"
-                        HorizontalAlignment="Right" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5,0,0">
+                    <Button Content="Clean"
+                            Command="{Binding CleanTextCommand}" CommandParameter="DecryptedText"
+                            Width="70" Margin="0,0,5,0"
+                            Background="{DynamicResource CleanButtonBackgroundColor}" Padding="5"/>
+                    <Button Content="Copy"
+                            Command="{Binding CopyTextToClipboardCommand}" CommandParameter="DecryptedText"
+                            Width="70"
+                            Background="{DynamicResource CopyButtonBackgroundColor}" Padding="5"/>
+                </StackPanel>
             </StackPanel>
         </Grid>
     </Grid>
