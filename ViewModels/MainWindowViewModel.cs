@@ -27,9 +27,9 @@ public class MainWindowViewModel : INotifyPropertyChanged
         _encryptionService = encryptionService;
         EncryptCommand = new RelayCommand(Encrypt, CanEncrypt);
         DecryptCommand = new RelayCommand(Decrypt, CanDecrypt);
-        CleanTextCommand = new CleanTextCommand(CleanText, IsTextPropertyNullOrEmpty);
+        CleanTextCommand = new CleanTextCommand(CleanText, IsTextPropertyContainsValue);
         TogglePasswordVisibilityCommand = new RelayCommand(TogglePasswordVisibility, CanTogglePasswordVisibility);
-        CopyTextToClipboardCommand = new CopyTextToClipboardCommand(CopyTextToClipboard, IsTextPropertyNullOrEmpty);
+        CopyTextToClipboardCommand = new CopyTextToClipboardCommand(CopyTextToClipboard, IsTextPropertyContainsValue);
 
         IsDarkMode = false;
         IsPasswordVisible = false;
@@ -125,7 +125,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
     private bool CanDecrypt() => !string.IsNullOrWhiteSpace(InputText) && !string.IsNullOrWhiteSpace(Password);
 
-    private bool IsTextPropertyNullOrEmpty(string propertyName)
+    private bool IsTextPropertyContainsValue(string propertyName)
     {
         var property = GetType().GetProperty(propertyName);
         return !string.IsNullOrEmpty(property?.GetValue(this) as string);
